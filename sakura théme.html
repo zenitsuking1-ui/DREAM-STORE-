@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="sakura-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DREAM STORE | Sakura Rose Luxury Edition</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        sakura: {
+                            50: '#FDF2F4',
+                            100: '#F8E2E7',
+                            200: '#E58A9F',
+                            300: '#C86C8D',
+                            400: '#A34E78',
+                            500: '#581622',
+                            dark: '#1C0A0E'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 5s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 3s infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 15px rgba(200, 108, 141, 0.4)' },
+                            '50%': { boxShadow: '0 0 30px rgba(163, 78, 120, 0.7)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        /* Default Sakura Theme */
+        body.sakura-theme {
+            background: linear-gradient(135deg, #FDF2F4 0%, #F8E2E7 50%, #E58A9F 100%);
+            color: #581622;
+        }
+        .sakura-theme .glass-box {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(229, 138, 159, 0.3);
+        }
+
+        /* Light Minimalist Theme */
+        body.light-theme {
+            background-color: #FAF8F5;
+            color: #1F1917;
+        }
+        .light-theme .glass-box {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(231, 229, 228, 1);
+        }
+
+        /* Dark Midnight Theme */
+        body.dark-theme {
+            background-color: #121012;
+            color: #F8E2E7;
+        }
+        .dark-theme .glass-box {
+            background: rgba(28, 16, 22, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(163, 78, 120, 0.3);
+        }
+
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal-on-scroll.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="sakura-theme antialiased min-h-screen flex flex-col justify-between selection:bg-sakura-300 selection:text-white">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-sakura-500 text-sakura-100 text-xs py-2.5 px-4 text-center font-bold tracking-wide shadow-md">
+        <span id="txt-top-bar">✨ توصيل سريع لجميع الولايات (58 ولاية) | تشكيلة خريف وشتاء الفاخرة متوفرة الآن ✨</span>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 glass-box border-b shadow-lg transition duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+            
+            <!-- Logo -->
+            <button onclick="showCatalogView()" class="text-2xl md:text-3xl font-black tracking-widest hover:scale-105 transition duration-300">
+                DREAM <span class="text-sakura-300 font-light">STORE</span>
+            </button>
+
+            <!-- Navigation Controls: Theme Switcher + Language + Cart -->
+            <div class="flex items-center gap-2 md:gap-4">
+                
+                <!-- Theme Switcher Dropdown -->
+                <div class="relative">
+                    <button onclick="toggleThemeDropdown()" class="flex items-center gap-2 px-3 py-2 rounded-xl text-xs md:text-sm font-bold glass-box shadow-sm transition">
+                        <i id="theme-icon" class="fa-solid fa-wand-magic-sparkles text-sakura-300"></i>
+                        <span id="current-theme-text" class="hidden sm:inline">Sakura</span>
+                        <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div id="theme-dropdown" class="absolute left-0 right-0 mt-2 w-36 glass-box rounded-xl shadow-2xl py-2 hidden z-50">
+                        <button onclick="setTheme('sakura')" class="w-full flex items-center gap-2 px-4 py-2 text-xs font-bold transition hover:bg-sakura-200/30">🌸 Sakura</button>
+                        <button onclick="setTheme('light')" class="w-full flex items-center gap-2 px-4 py-2 text-xs font-bold transition hover:bg-stone-200/50">☀️ Light</button>
+                        <button onclick="setTheme('dark')" class="w-full flex items-center gap-2 px-4 py-2 text-xs font-bold transition hover:bg-sakura-500/30">🌙 Dark</button>
+                    </div>
+                </div>
+
+                <!-- Language Selector -->
+                <div class="relative">
+                    <button onclick="toggleLangDropdown()" class="flex items-center gap-2 px-3 py-2 rounded-xl text-xs md:text-sm font-bold glass-box shadow-sm transition">
+                        <span id="current-lang-icon">🇩🇿</span>
+                        <span id="current-lang-text">العربية</span>
+                        <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div id="lang-dropdown" class="absolute left-0 right-0 mt-2 w-36 glass-box rounded-xl shadow-2xl py-2 hidden z-50">
+                        <button onclick="changeLanguage('ar')" class="w-full flex items-center gap-2 px-4 py-2 text-xs font-bold transition hover:bg-sakura-200/30"><span>🇩🇿</span> العربية</button>
+                        <button onclick="changeLanguage('fr')" class="w-full flex items-center gap-2 px-4 py-2 text-xs font-bold transition hover:bg-sakura-200/30"><span>🇫🇷</span> Français</button>
+                        <button onclick="changeLanguage('en')" class="w-full flex items-center gap-2 px-4 py-2 text-xs font-bold transition hover:bg-sakura-200/30"><span>🇬🇧</span> English</button>
+                    </div>
+                </div>
+
+                <!-- Cart Button -->
+                <button onclick="toggleCart()" class="relative p-2.5 rounded-xl glass-box hover:bg-sakura-300 hover:text-white transition duration-300 shadow-md">
+                    <i class="fa-solid fa-bag-shopping text-lg"></i>
+                    <span id="cart-count" class="absolute -top-1 -right-1 bg-sakura-400 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center animate-bounce">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full">
+        
+        <!-- ================= CATALOG VIEW ================= -->
+        <div id="catalog-view" class="space-y-12">
+            
+            <!-- Hero Section -->
+            <div class="rounded-3xl p-8 md:p-16 text-center bg-gradient-to-r from-sakura-500 via-sakura-400 to-sakura-500 text-white relative overflow-hidden shadow-2xl reveal-on-scroll">
+                <div class="absolute -top-12 -right-12 w-48 h-48 bg-white/20 rounded-full blur-3xl animate-float"></div>
+                <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-black/20 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+                
+                <div class="relative z-10 max-w-2xl mx-auto space-y-5">
+                    <span id="txt-hero-tag" class="inline-block text-xs uppercase tracking-widest font-extrabold bg-white/20 px-5 py-2 rounded-full backdrop-blur-md">
+                        ✨ تشكيلة حصرية جديدة ✨
+                    </span>
+                    <h1 id="txt-hero-title" class="text-3xl md:text-6xl font-black leading-tight tracking-tight">
+                        أناقتك تبدأ من التفاصيل <span class="font-light text-sakura-100">الفاخرة.</span>
+                    </h1>
+                    <p id="txt-hero-desc" class="text-sakura-100 text-sm md:text-lg font-light leading-relaxed">
+                        اكتشفي أرقى مستحضرات التجميل، باكات الهدايا، العطور الساحرة، الفناجين الأنيقة وديكورات الغرف.
+                    </p>
+                    <div class="pt-4">
+                        <a href="#products-section" id="txt-hero-btn" class="inline-block bg-white text-sakura-500 hover:bg-sakura-100 font-extrabold px-9 py-4 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition duration-300 animate-pulse-glow">
+                            تسوقي التشكيلة
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div id="products-section" class="flex flex-wrap items-center justify-center gap-3 reveal-on-scroll">
+                <button onclick="filterCategory('all', this)" id="btn-cat-all" class="cat-btn bg-sakura-400 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg transition hover:scale-105">الكل</button>
+                <button onclick="filterCategory('cosmetics', this)" id="btn-cat-cosmetics" class="cat-btn glass-box px-6 py-3 rounded-full text-sm font-bold transition hover:scale-105">مستحضرات تجميل</button>
+                <button onclick="filterCategory('perfumes', this)" id="btn-cat-perfumes" class="cat-btn glass-box px-6 py-3 rounded-full text-sm font-bold transition hover:scale-105">عطور فاخرة</button>
+                <button onclick="filterCategory('gifts', this)" id="btn-cat-gifts" class="cat-btn glass-box px-6 py-3 rounded-full text-sm font-bold transition hover:scale-105">باكات هدايا</button>
+                <button onclick="filterCategory('accessories', this)" id="btn-cat-accessories" class="cat-btn glass-box px-6 py-3 rounded-full text-sm font-bold transition hover:scale-105">إكسسوارات تجميل</button>
+                <button onclick="filterCategory('home', this)" id="btn-cat-home" class="cat-btn glass-box px-6 py-3 rounded-full text-sm font-bold transition hover:scale-105">فناجين وديكور</button>
+            </div>
+
+            <!-- Dynamic Products Grid -->
+            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+
+        <!-- ================= PRODUCT DETAILS VIEW ================= -->
+        <div id="product-details-view" class="hidden space-y-12">
+            
+            <!-- Breadcrumb Navigation -->
+            <div class="flex items-center gap-2 text-xs md:text-sm opacity-80">
+                <button onclick="showCatalogView()" class="hover:underline font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-arrow-right"></i> العودة للمتجر
+                </button>
+                <span>/</span>
+                <span id="detail-category" class="font-semibold">القسم</span>
+                <span>/</span>
+                <span id="detail-name-crumb" class="text-sakura-300 font-bold">اسم المنتج</span>
+            </div>
+
+            <!-- Top Main Product Details Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start">
+                
+                <!-- Product Image Showcase -->
+                <div class="relative glass-box p-4 rounded-3xl shadow-2xl overflow-hidden group">
+                    <img id="detail-image" src="" alt="Product" class="w-full h-[400px] md:h-[500px] object-cover rounded-2xl group-hover:scale-105 transition duration-700">
+                    <span id="detail-discount-badge" class="absolute top-8 right-8 bg-red-600 text-white font-extrabold text-xs px-3.5 py-1.5 rounded-full shadow-lg">-25%</span>
+                </div>
+
+                <!-- Product Info & Actions -->
+                <div class="space-y-6">
+                    <div>
+                        <h1 id="detail-name" class="text-3xl md:text-4xl font-black leading-tight mb-3">اسم المنتج</h1>
+                        <div class="flex items-center gap-4 mb-4">
+                            <span id="detail-price" class="text-3xl font-black text-sakura-400">0 دج</span>
+                            <span id="detail-old-price" class="opacity-50 line-through text-xl font-semibold">0 دج</span>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Tabs for Description, Usage, Specs -->
+                    <div class="glass-box rounded-2xl p-6 space-y-4 shadow-sm">
+                        <div class="flex border-b border-sakura-300/30 pb-3 gap-4 text-sm font-bold overflow-x-auto">
+                            <button onclick="switchTab('desc')" id="tab-btn-desc" class="text-sakura-400 border-b-2 border-sakura-400 pb-1">الوصف</button>
+                            <button onclick="switchTab('usage')" id="tab-btn-usage" class="opacity-70 hover:opacity-100 pb-1">طريقة الاستعمال</button>
+                            <button onclick="switchTab('specs')" id="tab-btn-specs" class="opacity-70 hover:opacity-100 pb-1">المواصفات</button>
+                        </div>
+
+                        <!-- Tab Content 1: Description -->
+                        <div id="tab-content-desc" class="tab-pane text-sm leading-relaxed font-light opacity-90">
+                            جميع منتجاتنا أصلية ومختارة بعناية لتضمن لك أفضل تجربة وجودة ممتازة.
+                        </div>
+
+                        <!-- Tab Content 2: Usage -->
+                        <div id="tab-content-usage" class="tab-pane text-sm leading-relaxed font-light opacity-90 hidden space-y-2">
+                            <p>✨ <b>الخطوة 1:</b> تنظيف البشرة أو المنطقة المستهدفة جيداً قبل التطبيق.</p>
+                            <p>🌸 <b>الخطوة 2:</b> وضع كمية مناسبة وتوزيعها بحركات دائرية ناعمة لضمان الامتصاص.</p>
+                            <p>💧 <b>الخطوة 3:</b> تُكرر العملية بانتظام للحصول على أفضل النتائج المثالية.</p>
+                        </div>
+
+                        <!-- Tab Content 3: Specs -->
+                        <div id="tab-content-specs" class="tab-pane text-sm leading-relaxed font-light opacity-90 hidden space-y-1">
+                            <p>• الجودة: منتج أصلي ومضمون 100%</p>
+                            <p>• بلد المنشأ: استيراد عالمي فاخر</p>
+                            <p>• التوصيل: متوفر لجميع ولايات الوطن (58 ولاية)</p>
+                        </div>
+                    </div>
+
+                    <!-- Add to Cart Controls -->
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-3 glass-box p-2 rounded-xl">
+                                <button onclick="changeDetailQty(-1)" class="w-9 h-9 rounded-lg font-bold shadow-sm hover:bg-sakura-300 hover:text-white transition">-</button>
+                                <span id="detail-qty-val" class="font-bold text-lg w-6 text-center">1</span>
+                                <button onclick="changeDetailQty(1)" class="w-9 h-9 rounded-lg font-bold shadow-sm hover:bg-sakura-300 hover:text-white transition">+</button>
+                            </div>
+                            <button id="detail-add-btn" onclick="addCurrentDetailToCart()" class="flex-grow bg-sakura-400 hover:bg-sakura-500 text-white font-extrabold py-4 px-6 rounded-xl text-sm md:text-base shadow-2xl transition duration-300">
+                                <i class="fa-solid fa-cart-plus ml-2"></i> إضافة إلى السلة
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Badges -->
+                    <div class="grid grid-cols-2 gap-4 pt-4 text-xs font-bold opacity-90">
+                        <div class="flex items-center gap-3 p-4 glass-box rounded-2xl shadow-sm">
+                            <i class="fa-solid fa-truck-fast text-sakura-400 text-xl"></i>
+                            <span>توصيل لـ 58 ولاية</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-4 glass-box rounded-2xl shadow-sm">
+                            <i class="fa-solid fa-shield-halved text-sakura-400 text-xl"></i>
+                            <span>منتج أصلي 100%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How-to-Use Usage Gallery -->
+            <div class="glass-box p-6 md:p-8 rounded-3xl shadow-sm space-y-6">
+                <h3 id="txt-usage-title" class="text-xl font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-sakura-400"></i> معرض صور الاستخدام:
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4" id="usage-gallery">
+                    <img src="https://images.unsplash.com/photo-1512290900676-26c2a6a095ae?w=300&q=80" class="rounded-2xl h-32 w-full object-cover shadow-md hover:scale-105 transition duration-300">
+                    <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=300&q=80" class="rounded-2xl h-32 w-full object-cover shadow-md hover:scale-105 transition duration-300">
+                    <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=300&q=80" class="rounded-2xl h-32 w-full object-cover shadow-md hover:scale-105 transition duration-300">
+                    <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=300&q=80" class="rounded-2xl h-32 w-full object-cover shadow-md hover:scale-105 transition duration-300">
+                </div>
+            </div>
+
+            <!-- Related Products Section -->
+            <div class="space-y-6 pt-6">
+                <h3 id="txt-related-title" class="text-xl md:text-2xl font-black border-r-4 border-sakura-400 pr-3">
+                    منتجات مشابهة قد تعجبك
+                </h3>
+                <div id="related-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Dynamic Related Grid -->
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-box py-10 text-center text-sm border-t mt-12">
+        <p class="font-bold text-lg mb-2">DREAM STORE</p>
+        <p>© 2026 DREAM STORE. Sakura Rose Edition.</p>
+    </footer>
+
+    <!-- Shopping Cart Modal -->
+    <div id="cart-modal" class="fixed inset-0 bg-black/60 backdrop-blur-md z-50 hidden transition-opacity duration-300">
+        <div class="fixed inset-y-0 left-0 max-w-full flex">
+            <div class="w-screen max-w-md glass-box shadow-2xl flex flex-col justify-between border-r">
+                
+                <!-- Cart Header -->
+                <div class="p-5 border-b flex items-center justify-between">
+                    <h2 id="txt-cart-title" class="text-lg font-bold"><i class="fa-solid fa-shopping-bag text-sakura-400 mx-2"></i> سلة التسوق</h2>
+                    <button onclick="toggleCart()" class="text-xl p-1"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <!-- Cart Items List -->
+                <div id="cart-items" class="p-5 flex-grow overflow-y-auto divide-y divide-sakura-200/30">
+                    <p id="txt-empty-cart" class="text-center py-10 font-medium opacity-60">سلة التسوق فارغة حالياً</p>
+                </div>
+
+                <!-- Cart Footer & Checkout -->
+                <div class="p-5 border-t space-y-4">
+                    <div class="flex justify-between text-base font-black">
+                        <span id="txt-cart-total-label">المجموع الإجمالي:</span>
+                        <span id="cart-total" class="text-sakura-400 text-xl font-black">0 دج</span>
+                    </div>
+
+                    <!-- Customer Form -->
+                    <div class="space-y-3">
+                        <input type="text" id="cust-name" placeholder="الاسم الكامل" class="w-full text-sm p-3.5 rounded-xl glass-box outline-none focus:border-sakura-400 transition">
+                        <input type="tel" id="cust-phone" placeholder="رقم الهاتف" class="w-full text-sm p-3.5 rounded-xl glass-box outline-none focus:border-sakura-400 transition">
+                        <input type="text" id="cust-address" placeholder="العنوان والولاية" class="w-full text-sm p-3.5 rounded-xl glass-box outline-none focus:border-sakura-400 transition">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 pt-2">
+                        <button onclick="checkoutWhatsApp()" class="w-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold py-3.5 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition">
+                            <i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp
+                        </button>
+                        <button onclick="checkoutTelegram()" class="w-full bg-[#0088cc] hover:bg-[#007ab8] text-white font-bold py-3.5 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition">
+                            <i class="fa-brands fa-telegram text-lg"></i> Telegram
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript App Logic -->
+    <script>
+        const translations = {
+            ar: {
+                dir: 'rtl',
+                topBar: '✨ توصيل سريع لجميع الولايات (58 ولاية) | تشكيلة خريف وشتاء الفاخرة متوفرة الآن ✨',
+                heroTag: '✨ تشكيلة حصرية جديدة ✨',
+                heroTitle: 'أناقتك تبدأ من التفاصيل الفاخرة.',
+                heroDesc: 'اكتشفي أرقى مستحضرات التجميل، باكات الهدايا، العطور الساحرة، الفناجين الأنيقة وديكورات الغرف.',
+                heroBtn: 'تسوقي التشكيلة',
+                catAll: 'الكل',
+                catCosmetics: 'مستحضرات تجميل',
+                catPerfumes: 'عطور فاخرة',
+                catGifts: 'باكات هدايا',
+                catAccessories: 'إكسسوارات تجميل',
+                catHome: 'فناجين وديكور',
+                cartTitle: 'سلة التسوق',
+                emptyCart: 'سلة التسوق فارغة حالياً',
+                cartTotalLabel: 'المجموع الإجمالي:',
+                addCart: 'إضافة للسلة',
+                custName: 'الاسم الكامل',
+                custPhone: 'رقم الهاتف',
+                custAddress: 'العنوان والولاية',
+                currency: 'دج',
+                descTitle: 'الوصف والمعلومات:',
+                usageTitle: 'معرض صور الاستخدام:',
+                relatedTitle: 'منتجات مشابهة قد تعجبك'
+            },
+            fr: {
+                dir: 'ltr',
+                topBar: '✨ Livraison rapide vers 58 wilayas | Nouvelle Collection Exclusive ✨',
+                heroTag: '✨ NOUVELLE COLLECTION ✨',
+                heroTitle: 'L\'élégance commence par les détails.',
+                heroDesc: 'Découvrez notre sélection de cosmétiques, coffrets cadeaux, parfums et tasses.',
+                heroBtn: 'Acheter maintenant',
+                catAll: 'Tous',
+                catCosmetics: 'Cosmétiques',
+                catPerfumes: 'Parfums de Luxe',
+                catGifts: 'Coffrets Cadeaux',
+                catAccessories: 'Accessoires',
+                catHome: 'Maison & Tasses',
+                cartTitle: 'Mon Panier',
+                emptyCart: 'Votre panier est vide',
+                cartTotalLabel: 'Total Général:',
+                addCart: 'Ajouter au Panier',
+                custName: 'Nom complet',
+                custPhone: 'Numéro de téléphone',
+                custAddress: 'Adresse et Wilaya',
+                currency: 'DZD',
+                descTitle: 'Description & Détails:',
+                usageTitle: 'Galerie d\'utilisation:',
+                relatedTitle: 'Produits Similaires'
+            },
+            en: {
+                dir: 'ltr',
+                topBar: '✨ Fast shipping to 58 provinces | New Exclusive Collection Available ✨',
+                heroTag: '✨ NEW EXCLUSIVE COLLECTION ✨',
+                heroTitle: 'Elegance Starts With Details.',
+                heroDesc: 'Explore premium cosmetics, gift sets, luxury perfumes, and ceramic mug sets.',
+                heroBtn: 'Shop Collection',
+                catAll: 'All Products',
+                catCosmetics: 'Cosmetics',
+                catPerfumes: 'Luxury Perfumes',
+                catGifts: 'Gift Sets',
+                catAccessories: 'Accessories',
+                catHome: 'Cups & Home',
+                cartTitle: 'Shopping Cart',
+                emptyCart: 'Your cart is currently empty',
+                cartTotalLabel: 'Grand Total:',
+                addCart: 'Add to Cart',
+                custName: 'Full Name',
+                custPhone: 'Phone Number',
+                custAddress: 'Address & City',
+                currency: 'DZD',
+                descTitle: 'Description & Details:',
+                usageTitle: 'Usage Gallery:',
+                relatedTitle: 'Related Products'
+            }
+        };
+
+        // Expanded Product List
+        const productsData = [
+            { id: 1, category: "cosmetics", price: 3500, oldPrice: 4500, image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&q=80", 
+              name: { ar: "سيروم الهيالورونيك وفيتامين C", fr: "Sérum Hyaluronique & Vitamine C", en: "Hyaluronic Acid & Vit C Serum" },
+              desc: { ar: "سيروم مغذي ومجدد للبشرة يعمل على ترطيبها بعمق ومنحها النضارة طوال اليوم.", fr: "Sérum nourrissant et régénérant qui hydrate en profondeur.", en: "Nourishing facial serum providing deep hydration." } },
+            { id: 2, category: "perfumes", price: 6800, oldPrice: 8500, image: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&q=80", 
+              name: { ar: "عطر ساكورا الوردي الفاخر", fr: "Parfum Sakura Rose de Luxe", en: "Luxury Sakura Rose Perfume" },
+              desc: { ar: "عطر نسائي راقي بتركيبة زهرية ناعمة تدوم طويلاً وتترك أثراً ساحراً.", fr: "Parfum féminin raffiné aux notes florales douces.", en: "Sophisticated women's fragrance with delicate floral notes." } },
+            { id: 3, category: "cosmetics", price: 1900, oldPrice: 2400, image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=600&q=80", 
+              name: { ar: "أحمر شفاه مخملي ثابت", fr: "Rouge à Lèvres Mat Velours", en: "Velvet Matte Lipstick" },
+              desc: { ar: "تركيبة غنية ومخملية تضمن لك لوناً ثابتاً طوال اليوم دون تجفيف الشفاه.", fr: "Formule riche et veloutée longue tenue.", en: "Rich matte lipstick offering long-lasting color." } },
+            { id: 4, category: "gifts", price: 8900, oldPrice: 11000, image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=600&q=80", 
+              name: { ar: "باك هدية العناية الملكي", fr: "Coffret Cadeau Soin Royal", en: "Royal Care Luxury Gift Set" },
+              desc: { ar: "تشكيلة فاخرة تجمع بين أفضل منتجات العناية بالبشرة والعطور.", fr: "Sélection de soins et parfums haut de gamme.", en: "Complete luxury care pack featuring skincare items." } },
+            { id: 5, category: "gifts", price: 6400, oldPrice: 8000, image: "https://images.unsplash.com/photo-1513885535751-8b9238bd454a?w=600&q=80", 
+              name: { ar: "صندوق هدية فاخر للمناسبات", fr: "Boîte Cadeau Luxe Événements", en: "Luxury Special Occasion Box" },
+              desc: { ar: "صندوق أنيق ومميز يحتوي على قطع تجميلية وديكور راقي.", fr: "Une boîte élégante emballée avec soin.", en: "Elegantly packaged gift box perfect for special moments." } },
+            { id: 6, category: "accessories", price: 3200, oldPrice: 4000, image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&q=80", 
+              name: { ar: "طقم فرش مكياج احترافي", fr: "Kit de Pinceaux Maquillage Pro", en: "Professional Makeup Brush Set" },
+              desc: { ar: "شعيرات ناعمة وفائقة الدقة تضمن توزيعاً متناسقاً للمكياج بسهولة.", fr: "Poils doux pour une application parfaite.", en: "Ultra-soft synthetic brushes for flawless application." } },
+            { id: 7, category: "accessories", price: 2700, oldPrice: 3500, image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80", 
+              name: { ar: "مرآة مكياج مضيئة بـ LED", fr: "Miroir Maquillage Lumineux LED", en: "LED Illuminated Makeup Mirror" },
+              desc: { ar: "إضاءة لمسية قابلة للتعديل توفر لك رؤية واضحة ودقيقة.", fr: "Éclairage LED réglable par touche tactile.", en: "Adjustable touch LED mirror ensuring crisp clarity." } },
+            { id: 8, category: "home", price: 4500, oldPrice: 5500, image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&q=80", 
+              name: { ar: "طقم فناجين قهوة سيراميك ذهبي", fr: "Service Tasses Café Céramique Doré", en: "Golden Ceramic Coffee Mug Set" },
+              desc: { ar: "أطقم فناجين سيراميك بحواف ذهبية تضفي لمسة من الفخامة.", fr: "Tasses en céramique avec bordures dorées.", en: "Premium ceramic coffee cups styled with golden rims." } },
+            { id: 9, category: "home", price: 2300, oldPrice: 3000, image: "https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=600&q=80", 
+              name: { ar: "فنجان شاي أنيق مع صحن وحامل", fr: "Tasse à Thé Élégante avec Soucoupe", en: "Elegant Tea Cup with Saucer" },
+              desc: { ar: "تصميم عصري يناسب أوقات الشاي والاسترخاء مع جودة عالية.", fr: "Design moderne idéal pour vos moments de détente.", en: "Modern chic tea cup with matching saucer." } },
+            { id: 10, category: "home", price: 2100, oldPrice: 2800, image: "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=600&q=80", 
+              name: { ar: "شمعة عطرية فاخرة للديكور", fr: "Bougie Parfumée de Décoration", en: "Luxury Scented Decor Candle" },
+              desc: { ar: "شموع معطرة بتصميم عصري تضفي دفئاً وجمالاً على غرفتك.", fr: "Bougies parfumées au design moderne.", en: "Scented candles with modern aesthetic." } }
+        ];
+
+        let currentLang = 'ar';
+        let cart = [];
+        let activeDetailProduct = null;
+        let detailQty = 1;
+
+        // Theme Switcher Logic
+        function setTheme(themeName) {
+            document.body.className = themeName + '-theme antialiased min-h-screen flex flex-col justify-between selection:bg-sakura-300 selection:text-white';
+            const themeNames = { sakura: 'Sakura', light: 'Light', dark: 'Dark' };
+            document.getElementById('current-theme-text').innerText = themeNames[themeName];
+            document.getElementById('theme-dropdown').classList.add('hidden');
+        }
+
+        function toggleThemeDropdown() {
+            document.getElementById('theme-dropdown').classList.toggle('hidden');
+        }
+
+        function toggleLangDropdown() {
+            document.getElementById('lang-dropdown').classList.toggle('hidden');
+        }
+
+        // Tabs Switcher Logic
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tab-content-' + tabName).classList.remove('hidden');
+
+            ['desc', 'usage', 'specs'].forEach(t => {
+                const btn = document.getElementById('tab-btn-' + t);
+                if (t === tabName) {
+                    btn.className = 'text-sakura-400 border-b-2 border-sakura-400 pb-1 font-bold';
+                } else {
+                    btn.className = 'opacity-70 hover:opacity-100 pb-1';
+                }
+            });
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            document.documentElement.dir = t.dir;
+            document.documentElement.lang = lang;
+
+            const langIcons = { ar: '🇩🇿', fr: '🇫🇷', en: '🇬🇧' };
+            const langNames = { ar: 'العربية', fr: 'Français', en: 'English' };
+            document.getElementById('current-lang-icon').innerText = langIcons[lang];
+            document.getElementById('current-lang-text').innerText = langNames[lang];
+            document.getElementById('lang-dropdown').classList.add('hidden');
+
+            document.getElementById('txt-top-bar').innerText = t.topBar;
+            document.getElementById('txt-hero-tag').innerText = t.heroTag;
+            document.getElementById('txt-hero-title').innerText = t.heroTitle;
+            document.getElementById('txt-hero-desc').innerText = t.heroDesc;
+            document.getElementById('txt-hero-btn').innerText = t.heroBtn;
+            
+            document.getElementById('btn-cat-all').innerText = t.catAll;
+            document.getElementById('btn-cat-cosmetics').innerText = t.catCosmetics;
+            document.getElementById('btn-cat-perfumes').innerText = t.catPerfumes;
+            document.getElementById('btn-cat-gifts').innerText = t.catGifts;
+            document.getElementById('btn-cat-accessories').innerText = t.catAccessories;
+            document.getElementById('btn-cat-home').innerText = t.catHome;
+
+            document.getElementById('txt-usage-title').innerHTML = `<i class="fa-solid fa-wand-magic-sparkles text-sakura-400"></i> ${t.usageTitle}`;
+            document.getElementById('txt-related-title').innerText = t.relatedTitle;
+
+            document.getElementById('txt-cart-title').innerHTML = `<i class="fa-solid fa-shopping-bag text-sakura-400 mx-2"></i> ${t.cartTitle}`;
+            document.getElementById('txt-cart-total-label').innerText = t.cartTotalLabel;
+            document.getElementById('cust-name').placeholder = t.custName;
+            document.getElementById('cust-phone').placeholder = t.custPhone;
+            document.getElementById('cust-address').placeholder = t.custAddress;
+
+            renderProducts();
+            if (activeDetailProduct) openProductDetails(activeDetailProduct.id);
+            updateCart();
+        }
+
+        function renderProducts(filter = 'all') {
+            const container = document.getElementById('products-grid');
+            container.innerHTML = '';
+            const t = translations[currentLang];
+            
+            const filtered = filter === 'all' ? productsData : productsData.filter(p => p.category === filter);
+            
+            filtered.forEach((product) => {
+                const productName = product.name[currentLang];
+                container.innerHTML += `
+                    <div onclick="openProductDetails(${product.id})" class="cursor-pointer glass-box rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl hover:-translate-y-2 transition duration-500 flex flex-col justify-between group">
+                        <div class="relative aspect-[4/4] overflow-hidden">
+                            <img src="${product.image}" alt="${productName}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            <span class="absolute top-4 right-4 bg-sakura-400 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-md">NEW</span>
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-base mb-2 group-hover:text-sakura-400 transition">${productName}</h3>
+                                <p class="text-sakura-400 font-black text-xl mb-4">${product.price} ${t.currency}</p>
+                            </div>
+                            <button onclick="event.stopPropagation(); addToCart(${product.id})" class="w-full bg-sakura-400 hover:bg-sakura-500 text-white font-extrabold py-3.5 rounded-xl text-sm shadow-md transition duration-300">
+                                ${t.addCart}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function openProductDetails(id) {
+            const product = productsData.find(p => p.id === id);
+            if (!product) return;
+
+            activeDetailProduct = product;
+            detailQty = 1;
+            document.getElementById('detail-qty-val').innerText = detailQty;
+
+            const t = translations[currentLang];
+            const catNames = { cosmetics: t.catCosmetics, perfumes: t.catPerfumes, gifts: t.catGifts, accessories: t.catAccessories, home: t.catHome };
+
+            document.getElementById('detail-category').innerText = catNames[product.category] || product.category;
+            document.getElementById('detail-name-crumb').innerText = product.name[currentLang];
+            document.getElementById('detail-name').innerText = product.name[currentLang];
+            document.getElementById('detail-price').innerText = `${product.price} ${t.currency}`;
+            document.getElementById('detail-old-price').innerText = `${product.oldPrice} ${t.currency}`;
+            document.getElementById('detail-image').src = product.image;
+            document.getElementById('tab-content-desc').innerText = product.desc[currentLang];
+
+            const relatedContainer = document.getElementById('related-products-grid');
+            relatedContainer.innerHTML = '';
+            const related = productsData.filter(p => p.id !== product.id).slice(0, 4);
+
+            related.forEach(rel => {
+                relatedContainer.innerHTML += `
+                    <div onclick="openProductDetails(${rel.id})" class="cursor-pointer glass-box rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300 flex flex-col justify-between">
+                        <img src="${rel.image}" class="h-44 w-full object-cover">
+                        <div class="p-4">
+                            <h4 class="font-bold text-sm mb-1">${rel.name[currentLang]}</h4>
+                            <p class="text-sakura-400 font-black text-sm">${rel.price} ${t.currency}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('catalog-view').classList.add('hidden');
+            document.getElementById('product-details-view').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showCatalogView() {
+            activeDetailProduct = null;
+            document.getElementById('product-details-view').classList.add('hidden');
+            document.getElementById('catalog-view').classList.remove('hidden');
+        }
+
+        function changeDetailQty(delta) {
+            detailQty += delta;
+            if (detailQty < 1) detailQty = 1;
+            document.getElementById('detail-qty-val').innerText = detailQty;
+        }
+
+        function addCurrentDetailToCart() {
+            if (!activeDetailProduct) return;
+            const existing = cart.find(c => c.id === activeDetailProduct.id);
+            if (existing) {
+                existing.qty += detailQty;
+            } else {
+                cart.push({ ...activeDetailProduct, qty: detailQty });
+            }
+            updateCart();
+            toggleCart(true);
+        }
+
+        function filterCategory(cat, btn) {
+            document.querySelectorAll('.cat-btn').forEach(b => {
+                b.className = "cat-btn glass-box px-6 py-3 rounded-full text-sm font-bold transition hover:scale-105";
+            });
+            btn.className = "cat-btn bg-sakura-400 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg transition hover:scale-105";
+            renderProducts(cat);
+        }
+
+        function addToCart(id) {
+            const item = productsData.find(p => p.id === id);
+            const existing = cart.find(c => c.id === id);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ ...item, qty: 1 });
+            }
+            updateCart();
+            toggleCart(true);
+        }
+
+        function changeQty(id, delta) {
+            const item = cart.find(c => c.id === id);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) cart = cart.filter(c => c.id !== id);
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            const t = translations[currentLang];
+            const countEl = document.getElementById('cart-count');
+            const itemsEl = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total');
+            
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            countEl.innerText = totalItems;
+            totalEl.innerText = `${totalPrice} ${t.currency}`;
+
+            if (cart.length === 0) {
+                itemsEl.innerHTML = `<p class="text-center py-10 font-medium opacity-60">${t.emptyCart}</p>`;
+                return;
+            }
+
+            itemsEl.innerHTML = '';
+            cart.forEach(item => {
+                itemsEl.innerHTML += `
+                    <div class="py-3.5 flex items-center justify-between">
+                        <div>
+                            <h4 class="font-bold text-sm">${item.name[currentLang]}</h4>
+                            <p class="text-xs text-sakura-400 font-bold mt-0.5">${item.price} ${t.currency} × ${item.qty}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="changeQty(${item.id}, -1)" class="w-7 h-7 rounded-lg glass-box font-bold flex items-center justify-center hover:bg-sakura-400 hover:text-white transition">-</button>
+                            <span class="text-sm font-bold w-4 text-center">${item.qty}</span>
+                            <button onclick="changeQty(${item.id}, 1)" class="w-7 h-7 rounded-lg glass-box font-bold flex items-center justify-center hover:bg-sakura-400 hover:text-white transition">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function toggleCart(forceOpen = false) {
+            const modal = document.getElementById('cart-modal');
+            if (forceOpen) modal.classList.remove('hidden');
+            else modal.classList.toggle('hidden');
+        }
+
+        function checkoutWhatsApp() {
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+            if (!name || !phone || !address || cart.length === 0) return alert('يرجى ملء كافة البيانات أولاً');
+
+            let text = `New Order / طلب جديد - DREAM STORE ✨\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n`;
+            cart.forEach((item, i) => {
+                text += `${i + 1}. ${item.name[currentLang]} (${item.qty}) = ${item.price * item.qty}\n`;
+            });
+            window.open(`https://wa.me/213000000000?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function checkoutTelegram() {
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+            if (!name || !phone || !address || cart.length === 0) return alert('يرجى ملء كافة البيانات أولاً');
+
+            let text = `New Order / طلب جديد - DREAM STORE ✨\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n`;
+            cart.forEach((item, i) => {
+                text += `${i + 1}. ${item.name[currentLang]} (${item.qty}) = ${item.price * item.qty}\n`;
+            });
+            window.open(`https://t.me/dreamstore_username?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+        });
+    </script>
+</body>
+</html>
